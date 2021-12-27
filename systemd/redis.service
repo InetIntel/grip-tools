@@ -1,0 +1,16 @@
+[Unit]
+Description=Redis In-Memory Data Store
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+OnFailure=grip-failure@redis.service
+
+[Service]
+User=bgp
+Group=bgp
+ExecStart=/usr/local/bin/redis-server /usr/local/etc/grip/grip-redis.conf
+ExecStop=/usr/local/bin/redis-cli shutdown
+Restart=on-failure
+SyslogIdentifier=redis
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=BGPView Kafka Server for GRIP
+OnFailure=grip-failure@bgpview-server.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/bgpview-server-grip.pid
+ExecStart=/usr/local/bin/bgpview-server-grip-run.sh
+Restart=on-failure
+SyslogIdentifier=bgpview-server-grip
+
+[Install]
+WantedBy=multi-user.target

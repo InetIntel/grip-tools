@@ -1,0 +1,20 @@
+[Unit]
+Description=GRIP Tagger (%i)
+OnFailure=grip-failure@tagger-%i.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/grip-tagger-%i.pid
+EnvironmentFile=/home/bgp/.limbo-cred.env
+ExecStart=/usr/local/bin/grip-tagger --listen --type %i
+ExecStartPre=/usr/local/bin/grip-ops-event -o start -T deployment,start,systemd \
+    -e %i -c tagger -m "tagger-%i service started"
+ExecStop=/usr/local/bin/grip-ops-event -o stop -T deployment,stop,systemd \
+    -e %i -c tagger -m "tagger-%i service stopped"
+Restart=on-failure
+SyslogIdentifier=grip-tagger-%i
+
+[Install]
+WantedBy=grip-taggers.target

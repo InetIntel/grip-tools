@@ -1,0 +1,9 @@
+[Unit]
+Description=GRIP Active Measurement Drivers
+Wants=grip-active-driver@defcon.service \
+    grip-active-driver@edges.service \
+    grip-active-driver@moas.service \
+    grip-active-driver@submoas.service
+
+[Install]
+WantedBy=multi-user.target

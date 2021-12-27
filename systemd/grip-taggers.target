@@ -1,0 +1,10 @@
+[Unit]
+Description=GRIP Taggers
+Wants=grip-announced-pfxs-probe-ips-updater.service \
+    grip-taggers@defcon.service \
+    grip-taggers@edges.service \
+    grip-taggers@moas.service \
+    grip-taggers@submoas.service
+
+[Install]
+WantedBy=multi-user.target

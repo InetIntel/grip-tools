@@ -1,0 +1,14 @@
+[Unit]
+Description=GRIP Failure Notifier (%s)
+
+[Service]
+Type=oneshot
+User=bgp
+Group=bgp
+EnvironmentFile=/home/bgp/.limbo-cred.env
+ExecStart=/usr/local/bin/grip-slackmsg.sh %i Service failure
+ExecStart=/usr/local/bin/grip-ops-event -o fail -T deployment,fail,systemd -i %i -m "%i service failed"
+SyslogIdentifier=grip-failure-%i
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=GRIP Redis Updaters
+Wants=grip-redis-updater@pfx2as-newcomer.service \
+    grip-redis-updater@pfx2as-historical.service \
+    grip-redis-updater@adjacencies.service
+
+[Install]
+WantedBy=multi-user.target

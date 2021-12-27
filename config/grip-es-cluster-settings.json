@@ -1,0 +1,6 @@
+{
+    "persistent": {
+        "search.max_buckets": 100000,
+        "action.destructive_requires_name": true
+    }
+}

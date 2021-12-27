@@ -1,0 +1,9 @@
+[Unit]
+Description=GRIP Active Measurement Collectors
+Wants=grip-active-collector@defcon.service \
+    grip-active-collector@edges.service \
+    grip-active-collector@moas.service \
+    grip-active-collector@submoas.service
+
+[Install]
+WantedBy=multi-user.target

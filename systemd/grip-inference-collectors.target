@@ -1,0 +1,9 @@
+[Unit]
+Description=GRIP Inference Result Collector
+Wants=grip-inference-collector@moas.service \
+    grip-inference-collector@defcon.service \
+    grip-inference-collector@edges.service \
+    grip-inference-collector@submoas.service
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=GRIP Announced Prefixes Probe IPs Updater
+OnFailure=grip-failure@announced-pfxs.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/grip-ann-pfx-probe-ips.pid
+EnvironmentFile=/home/bgp/.limbo-cred.env
+ExecStart=/usr/local/bin/grip-announced-pfxs-gen-probe-ips --listen
+Restart=on-failure
+SyslogIdentifier=grip-ann-pfx-probe-ips
+
+[Install]
+WantedBy=multi-user.target

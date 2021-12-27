@@ -1,0 +1,23 @@
+{
+    "order": 1,
+    "index_patterns": [
+        "observatory-operations-ops-events*"
+    ],
+    "settings": {
+        "number_of_shards": 1
+    },
+    "mappings": {
+        "dynamic_templates": [
+            {
+                "time_stamps": {
+                    "mapping": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second"
+                    },
+                    "match_mapping_type": "long",
+                    "match": "*_ts"
+                }
+            }
+        ]
+    }
+}

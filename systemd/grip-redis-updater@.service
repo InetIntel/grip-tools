@@ -1,0 +1,20 @@
+[Unit]
+Description=GRIP Redis Updater (%i)
+OnFailure=grip-failure@redis-updater-%i.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/grip-redis-updater-%i.pid
+EnvironmentFile=/home/bgp/.limbo-cred.env
+ExecStart=/usr/local/bin/grip-redis-updater --%i
+ExecStartPre=/usr/local/bin/grip-ops-event -o start -T deployment,start,systemd \
+    -e all -c redis-updater-%i -m "redis-updater-%i service started"
+ExecStop=/usr/local/bin/grip-ops-event -o stop -T deployment,stop,systemd \
+    -e all -c redis-updater-%i -m "redis-updater-%i service stopped"
+Restart=on-failure
+SyslogIdentifier=grip-redis-updater-%i
+
+[Install]
+WantedBy=multi-user.target

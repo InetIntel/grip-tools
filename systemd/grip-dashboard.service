@@ -1,0 +1,18 @@
+[Unit]
+Description=GRIP Dashboard
+OnFailure=grip-failure@dashboard.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+ExecStart=/usr/local/bin/grip-dashboard -d /var/lib/grip-dashboard
+ExecStartPre=/usr/local/bin/grip-ops-event -o start -T deployment,start,systemd \
+    -e all -c dashboard -m "dashboard service started"
+ExecStop=/usr/local/bin/grip-ops-event -o stop -T deployment,stop,systemd \
+    -e all -c dashboard -m "dashboard service stopped"
+Restart=on-failure
+SyslogIdentifier=grip-dashboard
+
+[Install]
+WantedBy=multi-user.target

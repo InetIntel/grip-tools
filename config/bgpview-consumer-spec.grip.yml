@@ -1,0 +1,99 @@
+# Describes how BGPView consumers and how they are to be run
+
+# Global consumer-manager options
+consumer-manager:
+  # Which timeseries backend to use
+  timeseries: "kafka -b kafka.rogues.caida.org:9092 -p tsk-production -c bgp.5min"
+
+  # Kafka Broker URIs (space separated)
+  kafka-brokers: "bgpview.bgpstream.caida.org:9192"
+
+  # Kafa namespace
+  kafka-namespace: "bgpview-prod"
+
+  # Kafka publication channel (which server instance check)
+  kafka-channel: "2400"
+
+# Set of consumers that we run
+#
+# increasing the version number will force a restart of all instances depending
+# on that consumer
+consumers:
+  visibility:
+    name: "visibility"
+    version: 1
+
+  announced-prefixes:
+    name: "announced-pfxs"
+    requires: "visibility"
+    options: "-o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  pfx-origins:
+    name: "pfx-origins"
+    requires: "visibility"
+    options: "-o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  routed-space:
+    name: "routed-space"
+    requires:
+    options: "-o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  moas:
+    name: "moas"
+    requires: "visibility"
+    options: "-w 86400 -o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  # NOTE: since submoas and defcon use the same consumer they cannot be run in
+  # the same instance.
+  submoas:
+    name: "subpfx"
+    requires: "visibility"
+    options: "-m submoas -o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  defcon:
+    name: "subpfx"
+    requires: "visibility"
+    options: "-m defcon -o /tmp/grip-consumer-tmp/"
+    version: 1
+
+  edges:
+    name: "edges"
+    requires: "visibility"
+    options: "-w 86400 -o /tmp/grip-consumer-tmp/"
+    version: 1
+
+
+#
+# Instances of the consumer manager to run. Values here must match a consumer
+# config block above.
+instances:
+  # all the relatively fast consumers where latency isn't vital
+  prefixes:
+    consumers: ["visibility", "announced-prefixes", "pfx-origins", "routed-space"]
+    version: 1
+
+  # just the moas consumer
+  moas:
+    consumers: ["visibility", "moas"]
+    version: 1
+
+  # just the submoas consumer
+  submoas:
+    consumers: ["visibility", "submoas"]
+    version: 1
+
+  # just the defcon consumer
+  defcon:
+    consumers: ["visibility", "defcon"]
+    version: 1
+
+  # just the edges consumer
+  edges:
+    consumers: ["visibility", "edges"]
+    version: 1
+

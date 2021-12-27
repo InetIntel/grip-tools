@@ -1,0 +1,252 @@
+{
+    "order": 1,
+    "index_patterns": [
+        "observatory-v3-events-*",
+        "observatory-v3-test-events-*"
+    ],
+    "settings": {
+        "index": {
+            "number_of_shards": "1",
+            "max_result_window": "1000000",
+            "mapping": {
+                "total_fields": {
+                    "limit": "10000"
+                }
+            }
+        }
+    },
+    "mappings": {
+        "dynamic_templates": [
+            {
+                "strings_as_keyword": {
+                    "mapping": {
+                        "norms": false,
+                        "ignore_above": 1024,
+                        "type": "keyword"
+                    },
+                    "match_mapping_type": "string"
+                }
+            },
+            {
+                "time_stamps": {
+                    "mapping": {
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                        "type": "date"
+                    },
+                    "match_mapping_type": "long",
+                    "match": "*_ts"
+                }
+            }
+        ],
+        "properties": {
+            "summary": {
+                "properties": {
+                    "prefixes": {
+                        "type": "keyword",
+                        "fields": {
+                            "range": {
+                                "type": "ip_range"
+                            }
+                        }
+                    },
+                    "ases": {
+                        "type": "keyword"
+                    }
+                }
+            },
+            "last_modified_ts": {
+                "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                "type": "date"
+            },
+            "finished_ts": {
+                "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                "type": "date"
+            },
+            "tr_metrics": {
+                "type": "object"
+            },
+            "asinfo": {
+                "type": "object",
+                "enabled": false
+            },
+            "view_ts": {
+                "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                "type": "date"
+            },
+            "duration": {
+                "type": "long"
+            },
+            "insert_ts": {
+                "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                "type": "date"
+            },
+            "external": {
+                "type": "object",
+                "enabled": false
+            },
+            "event_type": {
+                "type": "keyword"
+            },
+            "fingerprint": {
+                "type": "keyword"
+            },
+            "event_metrics": {
+                "type": "object"
+            },
+            "id": {
+                "type": "keyword"
+            },
+            "position": {
+                "type": "keyword"
+            },
+            "pfx_events": {
+                "properties": {
+                    "extra": {
+                        "type": "object",
+                        "enabled": false
+                    },
+                    "traceroutes": {
+                        "properties": {
+                            "worthy_tags": {
+                                "ignore_above": 1024,
+                                "type": "keyword"
+                            },
+                            "worthy": {
+                                "type": "boolean"
+                            },
+                            "msms": {
+                                "properties": {
+                                    "event_id": {
+                                        "ignore_above": 1024,
+                                        "type": "keyword"
+                                    },
+                                    "msm_id": {
+                                        "type": "long"
+                                    },
+                                    "request_error": {
+                                        "ignore_above": 1024,
+                                        "type": "keyword"
+                                    },
+                                    "probe_ids": {
+                                        "type": "long"
+                                    },
+                                    "results": {
+                                        "properties": {
+                                            "as_traceroute": {
+                                                "ignore_above": 1024,
+                                                "type": "keyword"
+                                            },
+                                            "dst": {
+                                                "ignore_above": 1024,
+                                                "type": "keyword"
+                                            },
+                                            "msm_id": {
+                                                "type": "long"
+                                            },
+                                            "src": {
+                                                "ignore_above": 1024,
+                                                "type": "keyword"
+                                            },
+                                            "endtime": {
+                                                "type": "long"
+                                            },
+                                            "prb_id": {
+                                                "type": "long"
+                                            },
+                                            "hops": {
+                                                "type": "object",
+                                                "enabled": false
+                                            },
+                                            "target_ip_reached": {
+                                                "type": "boolean"
+                                            },
+                                            "starttime": {
+                                                "type": "long"
+                                            },
+                                            "target_pfx_reached": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "finished_ts": {
+                        "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_second",
+                        "type": "date"
+                    },
+                    "details": {
+                        "properties": {
+                            "as2": {
+                                "type": "keyword"
+                            },
+                            "super_new_origins": {
+                                "type": "keyword"
+                            },
+                            "sub_pfx": {
+                                "type": "keyword",
+                                "fields": {
+                                    "range": {
+                                        "type": "ip_range"
+                                    }
+                                }
+                            },
+                            "prefix": {
+                                "type": "keyword",
+                                "fields": {
+                                    "range": {
+                                        "type": "ip_range"
+                                    }
+                                }
+                            },
+                            "sub_origins": {
+                                "type": "keyword"
+                            },
+                            "aspaths": {
+                                "type": "text"
+                            },
+                            "super_pfx": {
+                                "type": "keyword",
+                                "fields": {
+                                    "range": {
+                                        "type": "ip_range"
+                                    }
+                                }
+                            },
+                            "old_origins": {
+                                "type": "keyword"
+                            },
+                            "sub_old_origins": {
+                                "type": "keyword"
+                            },
+                            "aspaths_with_newedge": {
+                                "type": "text"
+                            },
+                            "super_aspaths": {
+                                "type": "text"
+                            },
+                            "super_origins": {
+                                "type": "keyword"
+                            },
+                            "origins": {
+                                "type": "keyword"
+                            },
+                            "sub_aspaths": {
+                                "type": "text"
+                            },
+                            "as1": {
+                                "type": "keyword"
+                            },
+                            "new_origins": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "aliases": {
+    }
+}

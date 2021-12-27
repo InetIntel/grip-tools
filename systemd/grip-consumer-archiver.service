@@ -1,0 +1,16 @@
+[Unit]
+Description=GRIP Consumer Archiver
+OnFailure=grip-failure@consumer-archiver.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/grip-consumer-archiver.pid
+EnvironmentFile=/home/bgp/.limbo-cred.env
+ExecStart=/usr/local/bin/grip-swift-archiver.pl /tmp/grip-consumer-tmp/
+Restart=on-failure
+SyslogIdentifier=grip-consumer-archiver
+
+[Install]
+WantedBy=multi-user.target

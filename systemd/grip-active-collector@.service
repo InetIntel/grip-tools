@@ -1,0 +1,21 @@
+[Unit]
+Description=GRIP Active Measurement Collector (%i)
+OnFailure=grip-failure@active-collector-%i.service
+
+[Service]
+Type=simple
+User=bgp
+Group=bgp
+PIDFile=/var/run/bgpview/grip-active-collector-%i.pid
+EnvironmentFile=/home/bgp/.limbo-cred.env
+EnvironmentFile=/home/bgp/.atlas-cred.env
+ExecStart=/usr/local/bin/grip-active-collector --type %i
+ExecStartPre=/usr/local/bin/grip-ops-event -o start -T deployment,start,systemd \
+    -e %i -c active-collector -m "active-collector-%i service started"
+ExecStop=/usr/local/bin/grip-ops-event -o stop -T deployment,stop,systemd \
+    -e %i -c active-collector -m "active-collector-%i service stopped"
+Restart=on-failure
+SyslogIdentifier=grip-active-collector-%i
+
+[Install]
+WantedBy=grip-active-collectors.target
